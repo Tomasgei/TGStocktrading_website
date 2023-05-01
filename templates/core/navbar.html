@@ -1,0 +1,176 @@
+
+{% load static %}
+<style>
+    .avatar {
+        height: 30px;
+        width: 30px;
+        background-color: #000;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .header form {
+        margin: 0;
+        position: relative;
+        z-index: 100;
+    }
+
+
+    .header .search input {
+        background: #fff;
+        border: none;
+            border-bottom-color: currentcolor;
+            border-bottom-style: none;
+            border-bottom-width: medium;
+        border-bottom: 1px solid #cfd0d3;
+        border-radius: 0;
+        color: #707990;
+        font-family: Arial,sans-serif;
+        font-size: 13px;
+        height: 37px;
+        line-height: 13px;
+        outline: 0;
+        padding: 5px 0 6px 14px;
+        width: 100%;
+    }
+
+    .header .search .fa-search {
+        background: url(/img/icon_search.png) 100% no-repeat;
+        color: var(--link-blue);
+        cursor: pointer;
+        display: block;
+        font-size: 14px;
+        height: 13px;
+        position: absolute;
+        right: 14px;
+        top: 13px;
+        width: 14px;
+      }
+
+   
+
+</style>
+            
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container ">
+                    <a class="navbar-brand text-white" href="{% url "blog:blog_home" %}"><img src="{% static 'img/tgstocktrading_logo.png' %}" alt="tgstocktrading_logo"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item"><a class="nav-link" href= "{% url "blog:blog_home" %}" >Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href= "{% url "blog:blog_home" %}" >About</a></li>
+                                <li class="nav-item"><a class="nav-link" href= "{% url "blog:blog_home" %}">Contact</a></li>
+                                <li class="nav-item"><a class="nav-link" href= "{% url "blog:blog_home" %}">Pricing</a></li>
+                                <li class="nav-item"><a class="nav-link" href= "{% url "blog:blog_home" %}">FAQ</a></li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                                        <li><a class="dropdown-item" href="{% url "blog:blog_home" %}">Blog Home</a></li>
+                                        <li><a class="dropdown-item" href="{% url "blog:blog_home" %}">Blog Post</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                                        <li><a class="dropdown-item" href="portfolio-overview.html">Portfolio Overview</a></li>
+                                        <li><a class="dropdown-item" href="portfolio-item.html">Portfolio Item</a></li>
+                                    </ul>
+                                </li>
+                                {% if request.user.is_authenticated %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img class="avatar" src="https://png.pngtree.com/png-vector/20190116/ourlarge/pngtree-vector-avatar-icon-png-image_322275.jpg"></a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                                        <li><a class="dropdown-item" >Hello, {{user.username}}</a></li>
+                                        
+                                        <div class="dropdown-divider"></div>
+                                        <li><a class="dropdown-item" href=""><i class="bi bi-star-fill"></i>  Upgrade to Premium</a></li>
+                                        <li><a class="dropdown-item" href={% url "accounts:profile" %}>User Profile</a></li>
+                                        <li><a class="dropdown-item" href="#">Saved Posts</a></li>
+                                        <li><a class="dropdown-item" href="#">Change Password</a></li>
+                                        <div class="dropdown-divider"></div>
+                                        <li><a class="dropdown-item" href="{% url "logout" %}">Logout</a></li>
+                                    </ul>
+                                </li>
+                                {% else %}
+                                <li class="nav-item"><a class="nav-link" href="{% url "accounts:register" %}">Register</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url "accounts:login" %}">Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!--  subnavbar 
+                <nav class="navbar navbar-expand-lg nav-sub mb-3">
+                    <div class="container ">
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <div class="d-flex justify-content-center">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="{% url "blog:blog_home" %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Markets
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url "blog:blog_home" %}">Stock market</a></li>
+                                        <li><a class="dropdown-item" href="{% url "blog:blog_home" %}">Commodities</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="{% url "blog:blog_home" %}"></a>Cryptocurrencies</li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Financial News
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        </ul>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Watchlists
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        </ul>
+                                        </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Trading Signals</a>
+                                    </li>
+                                    </li>
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="">Instruments</a>
+                                    </li>    
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url "blog:blog_home" %}">Blog</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="">Membership</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="">Portfolios</a>
+                                    </li>
+                                </ul>   
+                            </div>
+                        </div>   
+                        <div class="d-flex justify-content-end">
+                            <div class="input-group ">
+                                <input class="form-control border-end-0 border p-1" type="text" value="search" id="example-search-input">
+                                <span class="input-group-append">
+                                    <button class="btn btn-outline-secondary bg-white border-start-0 border  ms-n3" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                         </div>
+                        </div>
+                    </div>  
+                </nav>
+                -->
+
+ 

@@ -1,0 +1,164 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block customCss %}<link rel="stylesheet" href="{% static '/css/custom.css' %}"/>{% endblock customCss %}
+{% block title %}tgstocktrading.com - {{article.title}}{% endblock title %}
+{% block content %}
+            <!-- Page Content-->
+            <section class="py-5">
+                <div class="container px-5 my-5">
+                    <div class="row gx-5">
+                        <div class="col-lg-9">
+                            <!-- Post content-->
+                            <article>
+                                <!-- Post header-->
+                                <header class="mb-4">
+                                    <!-- Post title-->
+                                    <h1 class="fw-bolder mb-1">{{article.title}}</h1>
+                                    <!-- Post meta content-->
+
+                                    <!-- Post author, likes, favourite and comments-->
+                                    <div class="row align-items-end justify-content-between">
+                                        <div class="col-4 d-flex align-items-center mt-lg-4 mb-3">
+                                            <img class="img-fluid rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." />
+                                            <div class="ms-3">
+                                                <div class="fw-bold">Author: {{article.author}}</div>
+                                                <div class="text-muted">{{article.pub_date}}</div>
+                                            </div>
+                                        </div>
+
+                                        {% if request.user.is_authenticated %}
+
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span class="" id="like_count"><small>{{article.like_count }} likes </small><span>  
+                                                <button class="btn btn-link text-dark p-0 border-0 " id="like-button" value="{{article.id}}" >
+                                                    <i class="bi bi-heart p-1" style="font-size: 1.25rem;"></i></button>
+                                                <button class="btn btn-link text-dark  p-0 border-0 btn-outline-light" id="like-button" value="{{article.id}}" ><i class="bi bi-bookmark p-1" style="font-size: 1.25rem;"></i></button>
+                                                <button class="btn btn-link text-dark  p-0 border-0 btn-outline-light" id="like-button" value="{{article.id}}" ><i class="bi bi-chat-quote" style="font-size: 1.25rem;"></i></i></button>
+                                        </div>
+                                        {% else %}
+
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <div class="col-4 d-flex justify-content-end">
+                                                <span class="" id="like_count"><small>{{article.like_count }} likes </small><a href="{% url "accounts:register" %}"  class="btn btn-link text-dark p-0 border-0 " >
+                                                        <i class="bi bi-heart p-1" style="font-size: 1.25rem;"></i></a><span> 
+                                                    <a href="{% url "accounts:register" %}" class="btn btn-link text-dark  p-0 border-0" ><i class="bi bi-bookmark p-1" style="font-size: 1.25rem;"></i></a>
+                                            </div>
+
+                                        </div>
+                                        {% endif %} 
+                                    </div>
+
+
+                                    <!-- Post categories-->
+                                    <div class="row align-items-end justify-content-between">
+                                        <div class="col-4 col-sm-6 mb-3">
+                                            {% for category in article.category.all %}
+                                            <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'blog:blog_category' category.slug %}">{{ category }}</a>
+                                            {% endfor %}
+                                        </div> 
+                                    </div>
+
+                                            
+                                </header>
+                                <!-- Preview image figure-->
+                                {% if article.image %}
+                                    <figure class="mb-4"><img class="img-fluid rounded" src={{article.image.url}} alt="..." /></figure>
+                                {% endif %}
+                                <!-- Post content-->
+                                <section class="mb-5">
+                                    <p class="fs-5 mb-4">{{article.content}}</p>
+                                </section>
+                            </article>
+                            <!-- tags section-->
+
+                            <div class="widget widget-tags">
+                                <h4 class="widget-title"><span>Tags</span></h4>
+                                <ul class="list-inline widget-list widget-list-inline taxonomies-list">
+                                    {% for tag in article.tags.all %}
+                                    <li class="list-inline-item"><a href="{% url 'blog:blog_tag' tag.slug %}">{{ tag }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <!-- Comments section-->
+                            <section>
+
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <!-- Comment form-->
+                                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                                        <!-- Single comment-->
+                                        {% for comment in comments %}
+
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                            <div class="ms-3">
+                                                <div class="fw-bold">{{ comment.author }}<span class=" text-muted font-weight-normal"></br>{{ comment.created }}</span>
+                                                </div>
+                                                {{ comment.content | linebreaks }}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-3 mt-5">
+                            <div class="widget widget-categories">
+                                <h5 class="widget-title"><span>Category</span></h5>
+                                <ul class="list-unstyled widget-list">
+                                    {% for category in categories %}
+                                        <li><a href="{% url 'blog:blog_category' category.slug %}">{{ category }}<small class="ml-auto"> ({{ category.articles_count }})</small></a>
+                                            </li>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="widget">
+                                <h5 class="widget-title"><span>Latest Articles</span></h5>
+                                <!-- post-item -->
+                                <ul class="list-unstyled widget-list">
+                                    <li class="d-flex widget-post align-items-center">
+                                        <a class="text-black" href="/blog/elements/">
+                                            <div class="widget-post-image flex-shrink-0 me-3">
+                                                <img class="rounded" loading="lazy" decoding="async" src="/static/img/post-4.jpg" alt="Post Thumbnail">
+                                            </div>
+                                        </a>
+                                        <div class="flex-grow-1">
+                                            <h5 class="h6 mb-0"><a class="text-black" href="blog-details.html">Elements That You Can Use To Create A New Post On This Template.</a></h5>
+                                            <small>March 15, 2020</small>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled widget-list">
+                                    <li class="d-flex widget-post align-items-center">
+                                        <a class="text-black" href="/blog/post-1/">
+                                            <div class="widget-post-image flex-shrink-0 me-3">
+                                                <img class="rounded" loading="lazy" decoding="async" src="/static/img/post-1.jpg" alt="Post Thumbnail">
+                                            </div>
+                                        </a>
+                                        <div class="flex-grow-1">
+                                            <h5 class="h6 mb-0"><a class="text-black" href="blog-details.html">Cheerful Loving Couple Bakers Drinking Coffee</a></h5>
+                                            <small>March 14, 2020</small>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled widget-list">
+                                    <li class="d-flex widget-post align-items-center">
+                                        <a class="text-black" href="/blog/post-2/">
+                                            <div class="widget-post-image flex-shrink-0 me-3">
+                                                <img class="rounded" loading="lazy" decoding="async" src="/static/img/post-2.jpg" alt="Post Thumbnail">
+                                            </div>
+                                        </a>
+                                        <div class="flex-grow-1">
+                                            <h5 class="h6 mb-0"><a class="text-black" href="blog-details.html">Cheerful Loving Couple Bakers Drinking Coffee</a></h5>
+                                            <small>March 14, 2020</small>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>  
+       {% endblock content %}  

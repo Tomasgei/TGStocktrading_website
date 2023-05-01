@@ -1,0 +1,117 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+        <title>{% block title %}Log in to your account{% endblock title %}</title>
+    </head>
+<body>   
+{% block content %}
+
+{% if request.user.is_authenticated %}
+<script>
+    window.location.href = '{% url "accounts:profile" %}';
+</script>
+{% endif %}
+
+<style>
+    .login,
+    .image {
+        min-height: 100vh;
+    }
+
+    .bg-image {
+        background-image: url("https://m.foolcdn.com/media/dubs/original_images/Intro_slide_-_digital_stock_chart_going_up_-_source_getty.jpg");
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .container-fluid {
+        max-width: 100%;
+    }
+
+    .account-form input {
+        border: 2px solid #ccc;
+        height: calc(2em + .75rem + 2px);
+    }
+
+    .account-form input:focus {
+        border-color: #1497ff;
+        box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075), 0 0 0px rgba(255, 0, 0, 0.6);
+    }
+
+    .red-button {
+        color:#C62216
+      }
+</style>
+<div class="container-fluid ">
+    <div class="row no-gutter">
+        <div class="col-md-6 text-light bg-dark">
+            <div class="login d-flex align-items-center py-2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-12 mx-auto p-4" style="width: 500px;">
+
+                            <form class="account-form p-4 rounded" action="{% url 'accounts:login' %}" method="post">
+
+                                {% csrf_token %}
+                                
+                                <img class="d-block mx-auto mb-4" src="{% static 'img\tgstocktrading_logo.png' %}" alt="">
+                                <h3 class="d-block mx-auto mb-4 text-center">Log in to your account</h3>
+                                {% if form.errors %}
+                                <div class="alert alert-primary" role="alert">
+                                    Error: Username or Password not correct!
+                                </div>
+                                {% endif %}
+
+                                <label class="small font-weight-bold">{{ form.username.label}}</label>
+                                {{ form.username}}
+
+                                <label class="small font-weight-bold">{{ form.password.label}}</label>
+                                {{ form.password}}
+
+                                <div class="col text-center">
+                                    <button class="btn btn-warning btn-block py-2 mb-4 mt-5 font-weight-bold" type="submit"
+                                    value="Log-in">Sign
+                                    in</button>
+                                </div>
+
+                                <p class="small font-weight-bold text-center pb-3">
+                                    <a href="{% url "accounts:register" %}">New to Blog? Create an account</a>
+                                </p>
+
+
+                                <hr class="mb-3">
+                                <p class="small text-center">By signing in to your account, you agree to Blog <a
+                                        href="">Terms of
+                                        Service</a> and
+                                    consent to
+                                    our <a href="">Cookie Policy</a> and <a href="">Privacy Policy</a>. This site is not
+                                    protected
+                                    by reCAPTCHA and
+                                    is a demonstration website
+                                    for learning purposes only.
+                                </p>
+                            </form>
+                            <p class="small text-center pt-4">
+                                <a href="#">Forgotten Password?</a>
+                            </p>
+                            <p class="small text-center">
+                                <a href="...">Help Center?</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-none d-md-flex bg-image"></div>
+    </div>
+</div>
+{% endblock %}
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+<script src="{% static '/js/tagsinput.js' %}"></script>   

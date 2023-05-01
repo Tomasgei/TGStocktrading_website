@@ -1,0 +1,49 @@
+.nav-sub{
+    background-color: rgb(255, 94, 0);
+}
+
+
+
+
+/* Footer styling section*/
+.footer-14398 {
+    padding: 4rem 0;
+    background: #000;
+    color: #777; }
+.footer-14398 .footer-site-logo {
+    color: #fff;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    display: block; }
+.footer-14398 h3 {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 20px; }
+
+.footer-14398 .links li {
+    margin-bottom: 10px; }
+.footer-14398 .links li a {
+    color: #999; }
+.footer-14398 .links li a:hover {
+    color: #FFCA2C; }
+.footer-14398 .link-menu li {
+    display: inline-block; }
+.footer-14398 .link-menu li a {
+    color: #fff;
+    display: inline-block;
+    padding: 10px; }
+.footer-14398 .link-menu.nav-left li:first-child a {
+    padding-left: 0; }
+.footer-14398 .link-menu.nav-right li:last-child a {
+    padding-left: 0; }
+.footer-14398 .social li {
+    display: inline-block; }
+.footer-14398 .social li a {
+    display: inline-block;
+    padding: 10px;
+    color: #ccc; }
+.footer-14398 .social li:last-child a {
+    padding-right: 0; }
+.footer-14398 .line {
+    border-top: 1px solid rgba(255, 255, 255, 0.2); }
