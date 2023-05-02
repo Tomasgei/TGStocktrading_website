@@ -95,13 +95,27 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('NAME'),
+        'USER': env('USER'),
+        'PASSWORD': env('PASSWORD'),
+        'HOST': env('HOST'),
+        'PORT': env('PORT'),
+    }
+}
+
+
 
 
 # Password validation
@@ -157,7 +171,15 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "login"
 LOGOUT_URL = "logout"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = env('EMAIL_BACKEND')
+EMAIL_HOST=env('EMAIL_HOST')
+EMAIL_HOST_USER=env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT=env('EMAIL_PORT')
+
+
+
 
 
 

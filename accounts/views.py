@@ -11,6 +11,9 @@ from django.contrib.auth import login
 from django.core.mail import send_mail
 from blog.models import Article
 from .models import User
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -53,6 +56,7 @@ def account_register(request):
             user.set_password(form.cleaned_data['password'])
             user.is_active = False
             user.save()
+            logger.info(f"New account created for {user.email}")
 
             current_site = get_current_site(request)
             subject = "Activate your Account"
@@ -64,6 +68,7 @@ def account_register(request):
             })
         
             send_mail(subject,message,"admin@tg.cz",[user.email])
+            logger.info(f"Activation email send sucessfully to {user.email}")
             return HttpResponse("Registered succesfully and activation sent")
              
     else:
