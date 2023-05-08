@@ -104,9 +104,25 @@ DATABASES = {
 }
 """
 
+
+
+# TEST Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "postgres",
+        'USER': "postgres",
+        'PASSWORD': "postgres",
+        'HOST': "localhost",
+        'PORT': "",
+    }
+}
+
+
+# PROD Database
+DATABASES = {
+    'default': {
+        'ENGINE': env('ENGINE'),
         'NAME': env('NAME'),
         'USER': env('USER'),
         'PASSWORD': env('PASSWORD'),
@@ -114,7 +130,6 @@ DATABASES = {
         'PORT': env('PORT'),
     }
 }
-
 
 
 

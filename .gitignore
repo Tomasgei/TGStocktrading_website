@@ -121,6 +121,10 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# Env config files
+.env.PROD
+.env.TEST
+
 # Environments
 .djangoTradingBlog
 .env
