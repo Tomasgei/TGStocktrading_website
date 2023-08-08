@@ -18,38 +18,48 @@
         <div class="col-lg-8">
             <!-- Featured blog post-->
             <div class="card shadow mb-4">
-                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                <a href="{% url 'blog:blog_detail' featured.slug %}"><img class="card-img-top" src={{featured.image.url}} alt="..." /></a>
                 <div class="card-body">
-                    <div class="small text-muted">January 1, 2023</div>
-                    <h2 class="card-title">Featured Post Title</h2>
+                    <div class="small text-muted">{{featured.pub_date}}</div>
+                    <h2 class="card-title">{{featured.title}}</h2>
                     <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-                    <a class="btn btn-primary" href="#!">Read more →</a>
+                    <a class="btn btn-primary" href="{% url 'blog:blog_detail' featured.slug %}">Read more →</a>
                 </div>
             </div>
             <!-- Nested row for non-featured blog posts-->
             <div class="row">
-                <div class="col-lg-6">
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted">January 1, 2023</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                            <a class="btn btn-primary" href="#!">Read more →</a>
+
+                {% for a in articles %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100 shadow border-0">
+                        {% if a.image %}
+                        <img class="card-img-top" src={{a.image.url}} alt="..">
+                        {% else %}
+                        <img class="card-img-top" src="../media/images/default.jpg" alt="..">
+                        {%endif %}
+                        <div class="card-body p-4">
+                            {% if a.premium  %}
+                            <div class="badge bg-success bg-gradient rounded-pill mb-2"><i class="bi bi-star-fill"></i> Premium</div>
+                            {% elif a.featured %}
+                            <div class="badge bg-info bg-gradient rounded-pill mb-2">Featured</div>
+                            {% endif  %}
+                            <a class="text-decoration-none link-dark stretched-link" href="{% url 'blog:blog_detail' a.slug %}"><div class="h5 card-title mb-3">{{ a.title }}</div></a>
+                            <p class="card-text mb-0">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
-                    </div>
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted">January 1, 2023</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                            <a class="btn btn-primary" href="#!">Read more →</a>
+                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                            <div class="d-flex align-items-end justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="...">
+                                    <div class="small">
+                                        <div class="fw-bold">{{a.author}}</div>
+                                        <div class="text-muted">{{a.pub_date}} · 6 min read</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
                 <div class="col-lg-6">
                     <!-- Blog post-->
                     <div class="card mb-4">
@@ -58,21 +68,14 @@
                             <div class="small text-muted">January 1, 2023</div>
                             <h2 class="card-title h4">Post Title</h2>
                             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                            <a class="btn btn-primary" href="#!">Read more →</a>
-                        </div>
-                    </div>
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted">January 1, 2023</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.</p>
                             <a class="btn btn-primary" href="#!">Read more →</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+          
+
             <!-- Pagination-->
             <nav aria-label="Pagination">
                 <hr class="my-0" />

@@ -1,0 +1,28 @@
+{% extends 'volt_templates/core/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="row">
+    <h2>Tohle je User Dashboard</h2>
+    <div class="col-md-4">
+        <div class="card border-0 shadow mb-4 mt-4">
+            <div class="card-body bg-white">
+                {% if portfolio %}
+                <p>Your portfolios:</p>
+                <ul>
+                {% for p in portfolio %}
+                <li><a href="{% url "portfolio:portfolio_home" p.pk %}">{{p.name}} id: {{p.pk}}</a></li>
+
+                {% endfor %}
+                </ul>
+                {% else %}
+                <p>You do not have a portfolio created yet.</p>
+                <a>Create you first portfolio</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

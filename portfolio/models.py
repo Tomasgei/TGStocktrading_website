@@ -1,8 +1,10 @@
+#import jsonfield
 from django.db import models
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _, gettext as __
-from accounts.models import User
+from django.utils.translation import gettext_lazy as _ , gettext as __
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 # Create your models here.
 class Portfolio(models.Model):
@@ -16,6 +18,8 @@ class Portfolio(models.Model):
     name = models.CharField(max_length=250, blank=False, null=False)
     currency = models.CharField(max_length=3,choices=currency,default="usd")
     initial_balance = models.FloatField(blank=False, null=False, default=100000)
+    portfolio_equity = models.JSONField(default=dict)
+    open_positions = models.JSONField(default=dict)
 
     class Meta:
         verbose_name = _("User Portfolio")

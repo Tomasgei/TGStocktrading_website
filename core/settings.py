@@ -33,7 +33,11 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
+#PROD config
+#ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
+
+#TEST config
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -57,6 +61,9 @@ MY_APPS = [
 THIRD_PARTY_APPS = [
     "rest_framework",
     'taggit',
+    'bulk_update_or_create',
+    'mathfilters',
+    
 ]
 
 INSTALLED_APPS = DJANGO_APPS + MY_APPS + THIRD_PARTY_APPS
@@ -104,8 +111,6 @@ DATABASES = {
 }
 """
 
-
-
 # TEST Database
 DATABASES = {
     'default': {
@@ -118,7 +123,7 @@ DATABASES = {
     }
 }
 
-
+"""
 # PROD Database
 DATABASES = {
     'default': {
@@ -130,7 +135,7 @@ DATABASES = {
         'PORT': env('PORT'),
     }
 }
-
+"""
 
 
 # Password validation
@@ -171,7 +176,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-#MEDIA_ROOT = os.path.join(BASE_DIR, "static")
+#STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -186,14 +191,23 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "login"
 LOGOUT_URL = "logout"
 
-#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_BACKEND = env('EMAIL_BACKEND')
 EMAIL_HOST=env('EMAIL_HOST')
 EMAIL_HOST_USER=env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT=env('EMAIL_PORT')
+EMAIL_USE_TLS = True
 
+# REDIS related settings
+REDIS_HOST = 'localhost' 
+REDIS_PORT = '6379' 
+# Celery settings
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0' 
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
+# RabbitMQ settings
+#CELERY_BROKER_URL = "amqp://myuser:mypassword@localhost:5672/myvhost"
+#CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
 
 

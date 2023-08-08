@@ -1,28 +1,181 @@
 {% extends 'core/base.html' %}
 {% block title %}BLOG HOME{% endblock title %}
 {% block content %}
-<div class="container">
-    <div class="row d-flex" style="gap: 10px">
-        <div class="col-sm bg-white shadow-sm p-3 rounded">
-            <h3 class="py-1 my-3">Actual Balance</h3>
-            <h4>$ {{buy_list}}</h4>
-        </div>
-        <div class="col-sm bg-white shadow-sm p-3 rounded">
-            <h3 class="py-1 my-3">Profit/Loss %</h3>
-            <h4>$ {{buy_list}}</h4>
-        </div>
-        <div class="col-sm bg-white shadow-sm p-3 rounded">
-            <h3 class="py-1 my-3">Dividends</h3>
-            <h4>$ {{buy_list}}</h4>
-        </div>
-        <div class="col-sm bg-white shadow-sm p-3 rounded">
-            <h3 class="py-1 my-3">Total Return</h3>
-            <h4>$ {{buy_list}}</h4>
-        </div>
+<div class="row">
+  <div class="col-3">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 350px;">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4">Sidebar</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="#" class="nav-link active" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+            Portfolio
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+            Orders
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+            Instruments
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+            Customers
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="" class="rounded-circle me-2" width="32" height="32">
+          <strong>mdo</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><a class="dropdown-item" href="#">New project...</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="row d-flex" style="gap: 10px">
+  </div>
+<div class="col-8">
+  <p>Your Username is : {{user}} </p>
+  <p>Your User Id is  : {{user.id}} </p>
+  <div class="row d-flex my-3" style="gap: 10px">
+    <div class="col-sm bg-white shadow-sm p-3 rounded">
+        <h3 class="py-1 my-3">Actual Balance</h3>
+        <h4>$ {{buy_list}}</h4>
+    </div>
+    <div class="col-sm bg-white shadow-sm p-3 rounded">
+        <h3 class="py-1 my-3">Profit/Loss %</h3>
+        <h4>$ {{buy_list}}</h4>
+    </div>
+    <div class="col-sm bg-white shadow-sm p-3 rounded">
+        <h3 class="py-1 my-3">Dividends</h3>
+        <h4>$ {{buy_list}}</h4>
+    </div>
+    <div class="col-sm bg-light shadow-sm p-3 rounded">
+        <h3 class="py-1 my-3">Total Return</h3>
+        <h4>$ {{buy_list}}</h4>
+    </div>
+  </div>
+  
+  <div class="d-flex justify-content-between">
+    <div class="col">
+      <h1>Portfolio</h1>
+      <span class="badge bg-warning text-dark">{{selected_portfolio}}</span>
+    </div>
+
+    <div class="col-sm-3 mb-3">
+
+    <select class="form-select">
+      <option value="none" selected disabled hidden>{{selected_portfolio}}</option>
+      {% for p in portfolio %}
+        <option>{{p}}</option>
+      {% endfor %}
+    </select>
+    <button type="button" class="btn btn-success">Go > </button>
+  </div>
+
+
+
+  </div>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Positions</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Transactions</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Analysis</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="news-tab" data-bs-toggle="tab" data-bs-target="#news" type="button" role="tab" aria-controls="news" aria-selected="false">News</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <table class="table my-3">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Symbol</th>
+            <th scope="col">Position</th>
+            <th scope="col">Avg.Price</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Last Price</th>
+            <th scope="col">Market value</th>
+            <th scope="col">Change %</th>
+            <th scope="col">Pnl</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for p in open_positions.0 %}
+          <tr>
+            <th scope="row">
+              <div>
+                <div>{{p.symbol}}</div>
+                <div class="small">Název společnosti</div>
+              </div>
+              </th>
+            <th scope="row">{{p.open_pos}}</th>
+            <th scope="row">{{p.avg_price|floatformat:2 }}</th>
+            <th scope="row">
+              <div>{{p.cost_basis}}</div>
+              <div class="small">USD</div>
+            </div>
+            </th>
+            <th scope="row">
+              <div>21.50</div>
+              <div class="small">last update: 13.5.2023 12:30</div>
+            </div>
+            </th>
+            <th scope="row">
+              <div>{{p.cost_basis}}</div>
+              <div class="small">USD</div>
+            </div>
+            </th>
+            <th scope="row">
+              <div>+ 3.55</div>
+            </div>
+            </th>
+          </th>
+          <th scope="row">
+            <div>+ 21</div>
+          </div>
+          </th>
+          {% endfor %}
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="row d-flex" style="gap: 10px">
         <div class="col-lg bg-white shadow-sm p-3 my-3 rounded">
-        <span><h3 class="py-2 my-3">Transactions <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addtransaction">+ Add</button></h3></span> 
+          <div class="d-flex justify-content-between">
+            <h3 class="py-2 my-3">Transactions <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addtransaction">+ Add</button></h3>
+          </div>
+
+        
         
         <!-- ADD Modal -->
         <div class="modal fade" id="addtransaction" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -57,7 +210,7 @@
             </div>
         </div>
         <table class="table">
-            <thead>
+            <thead class="table-dark">
               <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Symbol</th>
@@ -69,7 +222,7 @@
               </tr>
             </thead>
             <tbody>
-                {% for t in ptf_transactions %}
+                {% for t in transactions %}
               <tr>
                 <th scope="row">{{ t.trans_date }}</th>
                 <td>{{ t.symbol }}</td>
@@ -88,9 +241,10 @@
                 <td>
                     <button type="link" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#deletetransaction"><i class="fa-regular fa-trash-can p-1"></i></button>
                     <button type="link" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#update_transaction"><i class="fa-solid fa-pen p-1"></i></button>
-                    <a href="{% url "portfolio:transaction_delete" ptf_id=portfolio.pk pk=t.pk %}"><i class="fa-regular fa-trash-can p-1 p-1"></i></a>
-                    <a href="{% url "portfolio:transaction_delete" ptf_id=portfolio.pk pk=t.pk %}"><i class="fa-solid fa-pen p-1"></i></a>
-                </td>
+                    <!--<a href=""><i class="fa-regular fa-trash-can p-1 p-1"></i></a>
+                    <a href=""><i class="fa-solid fa-pen p-1"></i></a>-->
+              
+                  </td>
               </tr>
               {% endfor %}
             </tbody>
@@ -135,36 +289,109 @@
                   </div>
               </div>
 
-        <div class="col-lg bg-white shadow-sm p-3 my-3 rounded">
-            <h3 class="py-2 my-3">Open Positions</h3>
+
+    </div>
+    </div>
+    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+      <div class="row my-3">
+        <h3>Asset class breakdown </h3>
+        <div class="col-sm-3 p-4">
+          <canvas id="myChart"></canvas>
+        </div>
+        <div class="col-9 p-4">
             <table class="table">
-                <thead>
+                <thead class="table-dark">
                   <tr>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Units</th>
-                    <th scope="col">Avg.Price</th>
-                    <th scope="col">Amount ($)</th>
-                    <th scope="col">Last Price</th>
-                    <th scope="col">Current value ($)</th>
-                    <th scope="col">Pnl (%)</th>
+                    <th scope="col">Asset Class</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Market value</th>
+                    <th scope="col">Change %</th>
+                    <th scope="col">Pnl</th>
                   </tr>
                 </thead>
                 <tbody>
-                    {% for p in ptf_op_det %}
+                    {% for p in open_positions.0 %}
                   <tr>
-                    <th scope="row">{{p.ticker}}</th>
-                    <th scope="row">{{p.units}}</th>
-                    <th scope="row">{{p.avg_price}}</th>
-                    <th scope="row">{{p.cost_basis}}</th>
-  
-                  </tr>
+                    <th scope="row">
+                      <div>
+                        <div>Akcie</div>
+                      </div>
+                      </th>
+                    <th scope="row">
+                      <div>{{p.cost_basis}}</div>
+                      <div class="small">USD</div>
+                    </div>
+                    </th>
+                    <th scope="row">
+                      <div>{{p.cost_basis}}</div>
+                      <div class="small">USD</div>
+                    </div>
+                    </th>
+                    <th scope="row">
+                      <div>+ 3.55</div>
+                    </div>
+                    </th>
+                  </th>
+                  <th scope="row">
+                    <div>+ 21</div>
+                  </div>
+                  </th>
                   {% endfor %}
+                </tr>
                 </tbody>
               </table>
-            {{ptf_op_det}}
-            {{qoute_list}}
-        </div>
+          </div>
     </div>
+    <h3>Portfolio allocation</h3>
+    <div class="row">
+      <div class="col-sm">Currency</div>
+      <div class="col-sm">Region</div>
+      <div class="col-sm">Sector</div>
+      <div class="col-sm">Industry</div>
+    </div>
+  </div>
+  
+
+  <div class="row">
+  <div class="col-sm-3">
+    <canvas id="myChart"></canvas>
+  </div>
+  <div class="col-9">
+      
+    </div>
+
+
+</div>
 </div>
 
+
+</div>
+
+
+
+  
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      
+      plugins: {
+        legend: {
+           display: false
+        }
+     }
+   
+    }
+  });
+</script>
 {% endblock content %}  

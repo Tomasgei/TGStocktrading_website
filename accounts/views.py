@@ -10,15 +10,22 @@ from .tokens import account_activation_token
 from django.contrib.auth import login
 from django.core.mail import send_mail
 from blog.models import Article
-from .models import User
+#from .models import User
 import logging
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 logger = logging.getLogger(__name__)
 
 
 @login_required
 def account_profile(request):
-    context = {"section":"profile"}
+    user= request.user
+    user = User.objects.get(pk=user.pk)
+
+    
+    context = {"user":user}
     return render(request, "accounts/account_home.html", context)
 
 @login_required
@@ -57,7 +64,7 @@ def account_register(request):
             user.is_active = False
             user.save()
             logger.info(f"New account created for {user.email}")
-
+            
             current_site = get_current_site(request)
             subject = "Activate your Account"
             message = render_to_string("registration/account_activation_email.html", {
@@ -70,7 +77,7 @@ def account_register(request):
             send_mail(subject,message,"admin@tg.cz",[user.email])
             logger.info(f"Activation email send sucessfully to {user.email}")
             return HttpResponse("Registered succesfully and activation sent")
-             
+          
     else:
         registerForm = RegistrationForm()
         context = {"form": registerForm }

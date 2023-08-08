@@ -9,12 +9,14 @@ logger = logging.getLogger(__name__)
 
 def blog_home(request):
     all_articles = Article.objects.filter(status="published", active=True)
+    featured =Article.objects.filter(status ="published", active=True, featured=True).latest("pub_date")
     
     context = {
-        "articles":all_articles,        
+        "articles":all_articles,
+        "featured":featured,        
     }
     logger.info("Request for blog home page")
-    return render(request, "blog/blog_home.html", context)
+    return render(request, "blog/blog_home_new.html", context)
 
 def blog_detail(request, slug):
     article = get_object_or_404(Article, slug=slug)

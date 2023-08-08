@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Transaction
+from .models import Transaction,Portfolio
+from . tasks import recalculate_portfolio
 
 class AddTransactionForm(ModelForm):
     class Meta:
@@ -21,4 +22,6 @@ class AddTransactionForm(ModelForm):
                     "trans_price" : forms.NumberInput(attrs={'class' : 'form-control'}),
                     "commision" : forms.NumberInput(attrs={'class' : 'form-control'}),
                    }
-    
+        
+        #def update_portfolio(self):
+         #   recalculate_portfolio.delay()

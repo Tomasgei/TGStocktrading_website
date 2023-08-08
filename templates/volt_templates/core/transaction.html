@@ -1,0 +1,19 @@
+{% extends 'volt_templates/core/base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block content %}
+přidej transakci
+
+<!-- ADD Modal -->
+<div class="col-4-md">
+    <form class="mb-3" action="" method="post">
+    {% csrf_token %}
+    {{form.as_p }}
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" name="add_transaction">Add Transaction</button>
+    </form>
+</div>
+
+<!--End modal add transaction-->
+{% endblock content %}

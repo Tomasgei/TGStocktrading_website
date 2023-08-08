@@ -1,9 +1,15 @@
 from django.db import models
+from django.db.models import signals
+from django.core.mail import send_mail
 import uuid
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 class User(AbstractBaseUser, PermissionsMixin):
     pkid = models.BigAutoField(primary_key=True, editable=False)
@@ -36,4 +42,3 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     def get_short_name(self) -> str:
         return self.username
-    

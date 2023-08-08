@@ -1,8 +1,36 @@
 .nav-sub{
-    background-color: rgb(255, 94, 0);
+    background-color: #FFCA2C;
+    font-size: 16px;
 }
 
 
+.search-custom{
+color: #999;
+margin-bottom: auto;
+margin-top: auto;
+height: 50px;
+
+padding: 5px;
+}
+.header-button{
+
+    width: 6rem;
+    height: 2.25rem;
+    padding: 0.25rem;
+    border-style:solid;
+    border-color: #ffffff;
+    border-width: 1.5px;
+    color:white;
+}
+
+.header-button-sign{
+
+    width: 6rem;
+    height: 2.25rem;
+    padding: 0.25rem;
+    background-color: #FFCA2C;
+    color: #212529;
+}
 
 
 /* Footer styling section*/

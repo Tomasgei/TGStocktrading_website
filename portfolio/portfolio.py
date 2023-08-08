@@ -1,24 +1,18 @@
 import numpy as np
 import pandas as pd
 import requests
-
-def get_qoute(symbol):
-    # replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
-    url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo'
-    r = requests.get(url)
-    data = r.json()
-    d = data['Global Quote']['05. price']
-    return d
-
+import yfinance as yf
+from . import iexapi
+api = iexapi.IEXAPI()
 
 class PortfolioStats:
-    def __init__(self,name, init_balance,currency, list_of_transactions) -> None:
+    def __init__(self, name, init_balance, currency, list_of_transactions, start_date, end_date) -> None:
         self.name = name 
         self.init_balance = init_balance
         self.currency = currency
         self.transactions = list_of_transactions
-        self.start_date = ""
-        self.end_date = ""
+        self.start_date = start_date
+        self.end_date = end_date
         
     def get_trans_as_dict(self):
         trans_list = []
@@ -42,6 +36,7 @@ class PortfolioStats:
         trans.set_index("trans_date")
         return trans
     
+    
     def get_open_positions(self):
         transactions = self.get_trans_as_df()
         trans_data = transactions[["symbol","trans_units"]]
@@ -49,37 +44,57 @@ class PortfolioStats:
         non_zero_pos = tdf["trans_units"] > 0
         tdf = tdf[non_zero_pos]
         open_pos =  tdf.to_dict()
-        return open_pos
-    
-    def get_open_positions_detail(self):
-        open_pos = self.get_open_positions()
-        x = open_pos["trans_units"]
-        portfolio_positions = []
-
-        for key in x:
-            position_dictionary = {} 
-            df = self.get_trans_as_df()
-            symbol_filter = df.symbol == key
-            symbol_transactions = df[symbol_filter]
-            symbol_transactions = symbol_transactions.copy()
-            trailing_units = symbol_transactions.trans_units.cumsum()
-            trailing_buys = symbol_transactions.type == "BUY"
-            entry_price_sum = symbol_transactions.trans_price.cumsum()
-            invested_amount = symbol_transactions.trans_price.multiply(symbol_transactions.trans_units)
-
-            symbol_transactions["invested_amount"] = invested_amount
-            symbol_transactions["total_invested_amount"] = invested_amount.cumsum()
-            symbol_transactions["trailing_units"] = trailing_units
-            ab = symbol_transactions["total_invested_amount"].divide(symbol_transactions.trailing_units)
-            symbol_transactions["trailing_buys"] = trailing_buys.cumsum()
-            symbol_transactions["avg_purchase_price"] = symbol_transactions["total_invested_amount"].divide(symbol_transactions.trailing_units)
-    
-            # create open positions stats
-            position_dictionary["ticker"] = key
-            position_dictionary["units"] = trailing_units.iloc[-1]
-            position_dictionary["avg_price"] = symbol_transactions["avg_purchase_price"].iloc[-1]
-            position_dictionary["cost_basis"] = position_dictionary["units"] * position_dictionary["avg_price"]
-            portfolio_positions.append(position_dictionary)
-            
-        return portfolio_positions
+        open_pos_list = list(open_pos['trans_units'].keys())
+        trans = self.get_trans_as_dict()
+        print(trans)
         
+        open_positions = []
+
+        for position in open_pos["trans_units"]:
+            buy_transactions = {}
+            for transaction in trans :
+                if transaction["type"] == "BUY" and transaction["symbol"] == position:
+                    symbol = transaction["symbol"]
+                    price = transaction["trans_price"]
+                    units = transaction["trans_units"]
+                    if symbol in buy_transactions:
+                        buy_transactions[symbol]["total_cost"] += price * units
+                        buy_transactions[symbol]["total_units"] += units
+                    else:
+                        buy_transactions[symbol] = {"total_cost": price * units, "total_units": units}
+                
+                
+            for symbol, data in buy_transactions.items():
+                portfolio_pos = {}
+                avg_price = data["total_cost"] / data["total_units"]
+                data["avg_price"] = avg_price
+                portfolio_pos["symbol"] = symbol
+                portfolio_pos["avg_price"] = data["avg_price"]
+                portfolio_pos["open_pos"] = open_pos["trans_units"][symbol]
+                portfolio_pos["cost_basis"] = portfolio_pos["avg_price"]*portfolio_pos["open_pos"]
+                #quote = api.get_quote_field(symbol)
+                try:
+                    quote = yf.download(symbol, period="1d")
+                    portfolio_pos["quote"] = quote["Adj Close"].iloc[0]
+                    portfolio_pos["market_value"] = portfolio_pos["open_pos"] * portfolio_pos["quote"] 
+                except:
+                    portfolio_pos["quote"]=""
+                    portfolio_pos["market_value"] =""
+                    
+                open_positions.append(portfolio_pos)
+                print(f"Symbol: {symbol}, Average Buy Price: {avg_price:.2f}")
+
+        return open_positions,open_pos_list
+    
+    def get_news_for_positions(self):
+        stock_list = self.get_open_positions()[1]
+        data = yf.Ticker("PBR")
+        news = data.news[0:6]
+        return news
+    
+    
+    def get_open_position_prices(self):
+        stock_list = self.get_open_positions()[1]
+        # Stažení dat z Yahoo Finance
+        data = yf.download(stock_list, period="1d")["Adj Close"]
+        return data
